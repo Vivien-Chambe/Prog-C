@@ -37,12 +37,17 @@ return ((a * b) % 1099511627689);
 // In: 0 <= n < 2**64
 // Out: 0 <= x < 536870909 t.q. x ~ a^n [536870909]
 uint64_t slow_exp(uint64_t a, uint64_t n){
+    int exp = 1;
     if (n == 0){
-        return 1;
+        return exp;
     }
     else{
-        return mul293(a,slow_exp(a,n-1));
+        
+        for(int i = 0; i<n ; i++){
+            exp = exp * a;
+        }
     }
+    return exp;
 }
 
 void testslowexp()
