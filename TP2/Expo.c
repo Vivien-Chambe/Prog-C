@@ -36,48 +36,58 @@ return ((a * b) % 1099511627689);
 // In: 0 <= a < 536870909
 // In: 0 <= n < 2**64
 // Out: 0 <= x < 536870909 t.q. x ~ a^n [536870909]
-uint64_t slow_exp(uint64_t a, uint64_t n){
+uint64_t slow_exp(uint64_t a, uint64_t n)
+{
     int exp = 1;
-    if (n == 0){
+    if (n == 0)
+    {
         return exp;
     }
     else{
         
-        for(int i = 0; i<n ; i++){
-            exp = exp * a;
+        for(int i = 0; i<n ; i++)
+        {
+            exp = mul293(exp , a); 
         }
     }
-    return exp;
+    return (exp);
 }
 
-void testslowexp()
+uint64_t slow_exp_nomod(uint64_t a, uint64_t n)
 {
-    assert(slow_exp(2022,36) == 233688688);
-    assert(slow_exp(2022,37)== 72127216);
-    assert(slow_exp(200022,36)== 504243905);
-    assert(slow_exp(200022,37)== 84175716);
-    //assert(slow_exp(2022,slow_exp(10,9))== 274298323);
-    printf("10^1 :%lu \n", (slow_exp(2022,slow_exp(10,1))));
-    printf("10^2 :%lu \n", (slow_exp(2022,slow_exp(10,2))));
-    printf("10^3 :%lu \n", (slow_exp(2022,slow_exp(10,3))));
-    printf("10^4 :%lu \n", (slow_exp(2022,slow_exp(10,4))));
-    printf("10^5 :%lu \n", (slow_exp(2022,slow_exp(10,5))));
-
-    //on segfault ici càd aux puissances superieures a 5
-    //printf("10^6: %lu \n" ,(slow_exp(2022,slow_exp(10,6))));
-    // printf("10^7: %lu \n" ,(slow_exp(2022,slow_exp(10,7))));
-    // printf("10^8 :%lu \n", (slow_exp(2022,slow_exp(10,8))));
+    int exp = 1;
+    if (n == 0){return exp;}
+    else{
+        for(int i = 0; i<n ; i++) { exp = exp * a;  }
+        }
+    return (exp);
 }
 
-int main() {
+void testslowexp(int n)
+{
+    //assert(slow_exp(2022,36) == 233688688);
+    //assert(slow_exp(2022,37)== 72127216);
+    //assert(slow_exp(200022,36)== 504243905);
+    //assert(slow_exp(200022,37)== 84175716);
+    //assert(slow_exp(2022,1e9)== 274298323);
+    
+    for(int i = 1; i<n;i++){
+    printf("10^%d :%lu \n",i, (slow_exp(2022,slow_exp_nomod(10,i))));
+}
+}
+
+
+int main()
+{
 
     //printf("add293 :%lu \n",add293(456789,5432109));
     //printf("mul293 :%lu \n",mul293(456789,5432109));
     //printf("add109 :%lu \n",add109(456789,5432109));
     //printf("mul109 :%lu \n",mul109(456789,5432109));
 
-    testslowexp();    
-
+    testslowexp(10);    
+    //le cout de la fonction est exponentiel si on affiche les resultats pour 4 test nous avons 0,013sec 
+    // et pour 9 nous avons 15 sec
 
     return 0;
 }
