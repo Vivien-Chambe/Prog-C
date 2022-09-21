@@ -1,2 +1,5 @@
-void print_state(char state);
-char init_game(int taille_c);
+void init_game();
+
+
+void player_movement(int key);
+void game_over(int EXIT);

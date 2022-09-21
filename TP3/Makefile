@@ -2,47 +2,41 @@
 # Makefile pour la compilation des programmes 
 ###############################################################################
 
-#### options de compilation ####
-COMPIL_OPTIONS = -g 
-CFLAG =  -c
-
 #### variables ####
-CC = clang 
-BIN = clang
+CC = clang -g -Wall -lncurses
 
-EXECUTABLES = The_Death
+EXECUTABLES = The_Death_Canyon_of_DOOM
 
 all : $(EXECUTABLES)
 
 
+###############################################################################
+# 			Regles de compilation
+###############################################################################
 
-###############################################################################
-# compilation separee des packages (modules)
-###############################################################################
+%.o : %.C
+		$(CC) -c $<
 
 The_Death_Canyon_of_DOOM.o :  The_Death_Canyon_of_DOOM.c fonctions.h
-
-fonctions.o : fonctions.c fonctions.h
-
-
-%.o: %.c
-	$(CC) $(CFLAG) $(COMPIL_OPTIONS) $<
-
+fonctions.o : fonctions.c fonctions.h 
 
 ###############################################################################
 # edition de lien des modules separes 
 # pour la creation des programmes executables 
 ###############################################################################
 
-The_Death : The_Death_Canyon_of_DOOM.o fonctions.o
-
-
-%: %.o
-	$(BIN) $(COMPIL_OPTIONS) $^ -o $@
+The_Death_Canyon_of_DOOM : The_Death_Canyon_of_DOOM.o fonctions.o
+		$(CC) $^ -o $@ 
 
 ###############################################################################
 # nettoyage : suppression des fichiers .o et des executables
 ###############################################################################
 
+
+
 clean :
-	rm -rf *.o $(EXECUTABLES)
+	rm -rf $(EXECUTABLES) *.o
+
+
+run : 
+	./The_Death_Canyon_of_DOOM
