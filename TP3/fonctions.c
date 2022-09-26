@@ -1,61 +1,65 @@
 #include <ncurses.h>
-//*? taille fixe dans main 
-//*! taille du canyon soit inferieure a la taille du jeux
+#include <stdlib.h>
+#include "fonctions.h"
 
-// focntions pour l'aleatoire des nouveaux etats
+int perso_x = 0;
+// Le niveau est un tableau qui va contenir plusieurs lignes, je voulais fixer la taille avec LINES mais il faut une valeur constante
+// et j'ai fais des tests et lines depasse jamais 255 sauf si très très dézoomé , de meme pour la taille d'une ligne j'ai mis
+// 255 aussi au cas ou l'écran soit à la verticale.
+int level[255];
 
-void print_state(char state){ // imprime l'etat courant
-    for(int i = 0; i<sizeof(state);i++){
-        printf("%c",state[&i]);
+
+
+void init_level(){
+    for(int i = 0; i<10;i++){
+        level[i] = (COLS/2) - (CANYON_SIZE/2);
     }
-    printf("\n");
-
 }
 
-void init_game(){ // Initialise la partie et les x premieres lignes et la position du classique
-    // char state[] = "                                                                                                        ";
-    // for(int i = 0;i<71;i++){
-    //     state[i] = ' ';
-    // }
-    // int droite_canyon = ((sizeof(state)-taille_c)/2)%2;
-    // state[droite_canyon] = '*';
-    // state[droite_canyon+taille_c];
-    // for(int i = 0;i<10;i++){
-    //     print_state(state);
-    // }
-    // state[((sizeof(state)-1)/2)+1] = 'T';
-    // print_state(state);
+int new_line(){
+    int coord_gauche;
+    int num = rand() % 3 + 1; //Je sais faut pas utiliser rand mais c'etait pour faire des tests
+    if(num == 1){coord_gauche = level[0] - 1;}
+    else if(num == 2){coord_gauche = level[0];}
+    else{coord_gauche = level[0]+1;}
+    return coord_gauche;
+}
 
+
+void update_level(){
+    for(int i = LINES ; i>0;i--){
+        level[i] = level[i-1];
+    }
+    level[0] = new_line();
+}
+
+void show_level(){
+    for(int i = 0;i < LINES; i++){
+        mvprintw(i,level[i],BORDER);
+        mvprintw(i,level[i]+CANYON_SIZE,BORDER);
+    }
+}
+
+
+
+void update_perso_position(int c){
+    switch (c)
+    {
+    case KEY_LEFT:
+        perso_x --;
+        break;
+    case KEY_RIGHT:
+        perso_x ++;
+        break;
     
-    move(LINES - 1, COLS - 1);  // Déplace le curseur tout en bas à droite de l'écran
-    addch('.');
-    int c = getch();
-    if ( KEY_LEFT == c){
-        refresh();
-        move(LINES - 2, COLS -2);
-        getch();
+    default:
+        break;
     }
-    
-    if (getchar()== c){
-        endwin;
-    }
+}
 
+void show_perso(){
+    int relative_pos = COLS/2+perso_x;// Si perso_x est à 0 alors avec cette formule ça le place au centre donc peu importe la taille de la fenetre c'est au milieu.
+    mvprintw(LINES-3,relative_pos,SKIN);
 }
 
 
-//*! char new_state(char state){ }
-
-//*! void test_crash(){}
-void player_movement(int key){
-}
-
-void game_over(int EXIT) {
-    EXIT = true;
-    endwin();
-    printf("Game Over!\n");
-}
-
-void collision(){
-    //doit detecter si le joueur et a la position d'un des murs
-    //et soit     quitte le jeu avec un message        soit renvoie un bool avec la value collis
-}

@@ -32,10 +32,12 @@ The_Death_Canyon_of_DOOM : The_Death_Canyon_of_DOOM.o fonctions.o
 # nettoyage : suppression des fichiers .o et des executables
 ###############################################################################
 
-
-
 clean :
 	rm -rf $(EXECUTABLES) *.o
+
+###############################################################################
+# Lancement : Lancement de l'executable
+###############################################################################
 
 
 run : 

@@ -1,35 +1,41 @@
-#include "fonctions.h"
 #include <ncurses.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include "fonctions.h"
 
-int main(void) {
 
+
+int main(){
     initscr();
-    keypad(stdscr,TRUE);
+    keypad(stdscr, true); //Autorise les entrées utilisateurs
+    noecho();
+    cbreak();
+    curs_set(0);
+    timeout(0);
 
-    int ch; 
     int play = 1;
-    int perso_x = (COLS/2);
-    int perso_y = LINES-1;
-    mvprintw(perso_x, perso_y,"^");
-    while (play){
-        ch = getch();
+    int c;
+    show_perso();
+    init_level();
+    while (play == 1){
+        c =  getch();
+        if(c == 'q'){play = 0;break;}
+        else if(c == 'p'){sleep(3);}
+        else{update_perso_position(c);}
+
+        update_level();
+        erase();
+        mvprintw(0,0,"LINES:%d COLS:%d",LINES,COLS);
+        show_perso();
+        show_level();
+        refresh(); // Print changes on screen
+        usleep(30000);
+
         
-        switch(ch){
-            case KEY_LEFT:
-                mvprintw(perso_y, perso_x," ");
-                perso_x = perso_x-1;
-                mvprintw(perso_y, perso_x,"^");
-            case KEY_RIGHT:
-                mvprintw(perso_y, perso_x," ");
-                perso_x = perso_x+1;
-                mvprintw(perso_y, perso_x,"^");
-            case KEY_DOWN:
-                endwin();
-            
-
-        }
-        refresh();
-
     }
+    endwin();
+
     return 0;
+
 }
