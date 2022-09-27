@@ -32,8 +32,15 @@ void update_level(){
 
 void show_level(){
     for(int i = 0;i < LINES; i++){
-        mvprintw(i,level[i],BORDER);
-        mvprintw(i,level[i]+CANYON_SIZE,BORDER);
+        if(level[i]+CANYON_SIZE > COLS){
+            mvprintw(i,level[i],BORDER);
+            mvprintw(i,CANYON_SIZE,BORDER);
+        }
+        else{
+            mvprintw(i,level[i],BORDER);
+            mvprintw(i,level[i] + CANYON_SIZE,BORDER);
+
+        }
     }
 }
 
@@ -41,7 +48,7 @@ int check_collision(){
     int relative_pos = COLS/2+perso_x;
     if(relative_pos == level[LINES-5] || relative_pos == (level[LINES-5]+CANYON_SIZE)){
         
-        return 1;
+        return COLS/2+perso_x;
     }
     else{return 0;}
 }

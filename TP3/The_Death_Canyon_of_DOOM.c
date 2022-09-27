@@ -15,6 +15,7 @@ int main(){
     timeout(0);
 
     int play = 1;
+    int score = 1;
     int c;
     show_perso();
     init_level();
@@ -25,25 +26,27 @@ int main(){
 
         update_level();
         erase();
-        mvprintw(0,0,"LINES:%d COLS:%d",LINES,COLS);
+        mvprintw(0,0,"Score: %d",score);
+        score++;
         //Check collision
-        if(check_collision()){
+        
+
+        show_perso();
+        show_level();
+        if(check_collision()!=0){
             timeout(-1);
             play = 0;
-            erase();
+            mvprintw(LINES-5,check_collision(),"x");
             mvprintw(LINES/2,COLS/2,"YOU DEAD!!!!!!");
             refresh(); 
             break;
         }
-
-        show_perso();
-        show_level();
         refresh(); // Print changes on screen
         usleep(30000);
 
         
     }
-    getch();
+    sleep(1);
     getch();
     endwin();
 
