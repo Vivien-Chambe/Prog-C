@@ -3,9 +3,6 @@
 #include "fonctions.h"
 
 int perso_x = 0;
-// Le niveau est un tableau qui va contenir plusieurs lignes, je voulais fixer la taille avec LINES mais il faut une valeur constante
-// et j'ai fais des tests et lines depasse jamais 255 sauf si très très dézoomé , de meme pour la taille d'une ligne j'ai mis
-// 255 aussi au cas ou l'écran soit à la verticale.
 int level[255];
 
 
@@ -13,6 +10,7 @@ int level[255];
 void init_level(){
     for(int i = 0; i<10;i++){
         level[i] = (COLS/2) - (CANYON_SIZE/2);
+        mvprintw(10,10,"%d",level[i]);
     }
 }
 

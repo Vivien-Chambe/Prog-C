@@ -21,7 +21,6 @@ int main(){
     while (play == 1){
         c =  getch();
         if(c == 'q'){play = 0;break;}
-        else if(c == 'p'){sleep(3);}
         else{update_perso_position(c);}
 
         update_level();
