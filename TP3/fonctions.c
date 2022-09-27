@@ -8,11 +8,10 @@ int level[255];
 
 
 void init_level(){
-    for(int i = 0; i<10;i++){
-        level[i] = (COLS/2) - (CANYON_SIZE/2);
-        mvprintw(10,10,"%d",level[i]);
+    for(int i = 0; i<LINES;i++){
+        level[i] = (COLS/2)-(CANYON_SIZE/2);
     }
-}
+} 
 
 int new_line(){
     int coord_gauche;
@@ -38,7 +37,14 @@ void show_level(){
     }
 }
 
-
+int check_collision(){
+    int relative_pos = COLS/2+perso_x;
+    if(relative_pos == level[LINES-5] || relative_pos == (level[LINES-5]+CANYON_SIZE)){
+        
+        return 1;
+    }
+    else{return 0;}
+}
 
 void update_perso_position(int c){
     switch (c)
@@ -57,7 +63,7 @@ void update_perso_position(int c){
 
 void show_perso(){
     int relative_pos = COLS/2+perso_x;// Si perso_x est à 0 alors avec cette formule ça le place au centre donc peu importe la taille de la fenetre c'est au milieu.
-    mvprintw(LINES-3,relative_pos,SKIN);
+    mvprintw(LINES-5,relative_pos,SKIN);
 }
 
 

@@ -15,4 +15,5 @@ void show_perso();
 void update_perso_position();
 int new_line();
 void update_level();
+int check_collision();
 void show_level();

@@ -26,6 +26,16 @@ int main(){
         update_level();
         erase();
         mvprintw(0,0,"LINES:%d COLS:%d",LINES,COLS);
+        //Check collision
+        if(check_collision()){
+            timeout(-1);
+            play = 0;
+            erase();
+            mvprintw(LINES/2,COLS/2,"YOU DEAD!!!!!!");
+            refresh(); 
+            break;
+        }
+
         show_perso();
         show_level();
         refresh(); // Print changes on screen
@@ -33,6 +43,8 @@ int main(){
 
         
     }
+    getch();
+    getch();
     endwin();
 
     return 0;
