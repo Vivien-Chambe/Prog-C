@@ -28,7 +28,6 @@ int main(){
         erase();
         mvprintw(0,0,"Score: %d",score);
         score++;
-        //Check collision
         
 
         show_perso();
