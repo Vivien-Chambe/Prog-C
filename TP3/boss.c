@@ -27,43 +27,6 @@ void color_burnt_pablo(){
     init_pair(7,COLOR_GREEN,-1);
 }
 
-void print_Pablo(){
-    // Spec : affiche Pablo dans sa zone
-    // E,S : none , none
-
-    mvprintw(4, COLS-26,"PABLO");
-    //Big Cactus
-    attron(COLOR_PAIR(2));
-    mvprintw(6, COLS-40,"             / '-'  /");
-    mvprintw(7, COLS-40,"            ;       ;");
-    mvprintw(8, COLS-40,"         /'-|       |-' |");
-    mvprintw(9, COLS-40,"        |   |_______P   |");
-    mvprintw(10, COLS-40,"        |   '-------'   /");
-    mvprintw(11, COLS-40,"         '.___.....___.'");
-    attroff(COLOR_PAIR(2));
-    attron(COLOR_PAIR(3));
-    mvprintw(12, COLS-40,"             | ;  : ;|");
-    mvprintw(13, COLS-40,"            _|;__;__.|_");
-    attroff(COLOR_PAIR(3));
-    attron(COLOR_PAIR(1));
-    mvprintw(14, COLS-40,"           |     Y     |");
-    mvprintw(15, COLS-40,"           |___.'^'.___|");
-    attroff(COLOR_PAIR(1));
-    attron(COLOR_PAIR(3));
-    mvprintw(16, COLS-40,"             |_  ;  _|      .--.");
-    mvprintw(17, COLS-40," .--.        {^^^^^^^}     /;   |");
-    mvprintw(18, COLS-40,"/   ;|       {       }    | ;   |");
-    mvprintw(19, COLS-40,"|  ; |       {       }    |     |");
-    mvprintw(20, COLS-40,"|;   |       ;-.__.'|    |:  ; |");
-    mvprintw(21, COLS-40,"| ;  |      |;  ;   |_____/ ;  |");
-    mvprintw(22, COLS-40,"|   '.'-----'      ' -_   .'   /");
-    mvprintw(23, COLS-40,"|  '.   - _  ' ;  ;  _  -    .'");
-    mvprintw(24, COLS-40," '.   -     - ;  ;   .------`");
-    mvprintw(25,COLS-40,"   `--------.      ; |");
-    mvprintw(26, COLS-40,"            |;  ,    |");
-    mvprintw(27, COLS-40,"            |;  ,    |");
-    attroff(COLOR_PAIR(3));
-}
 
 void print_pablo_health(int pablo_health){
     // Spec : affiche la vie actuelle de Pablo
@@ -162,3 +125,80 @@ void win_Pablo_message(){
     mvprintw((LINES/2)+6,((COLS-49)/2),"| You defeated Pablo |");
     mvprintw((LINES/2)+7,((COLS-49)/2),"|____________________|");
 }
+
+
+void print_Pablo(){
+    // Spec : affiche la premiere frame de Pablo dans sa zone
+    // E,S : none , none
+
+    mvprintw(4, COLS-26,"PABLO");
+    //Big Cactus
+    attron(COLOR_PAIR(2));
+    mvprintw(6, COLS-40,"             / '-'  /");
+    mvprintw(7, COLS-40,"            ;       ;");
+    mvprintw(8, COLS-40,"         /'-|       |-' |");
+    mvprintw(9, COLS-40,"        |   |_______P   |");
+    mvprintw(10, COLS-40,"        |   '-------'   /");
+    mvprintw(11, COLS-40,"         '.___.....___.'");
+    attroff(COLOR_PAIR(2));
+    attron(COLOR_PAIR(3));
+    mvprintw(12, COLS-40,"             | ;  : ;|");
+    mvprintw(13, COLS-40,"            _|;__;__.|_");
+    attroff(COLOR_PAIR(3));
+    attron(COLOR_PAIR(1));
+    mvprintw(14, COLS-40,"           |     Y     |");
+    mvprintw(15, COLS-40,"           |___.'^'.___|");
+    attroff(COLOR_PAIR(1));
+    attron(COLOR_PAIR(3));
+    mvprintw(16, COLS-40,"             |_  ;  _|      .--.");
+    mvprintw(17, COLS-40," .--.        {^^^^^^^}     /;   |");
+    mvprintw(18, COLS-40,"/   ;|       {       }    | ;   |");
+    mvprintw(19, COLS-40,"|  ; |       {       }    |     |");
+    mvprintw(20, COLS-40,"|;   |       ;-.__.'|    |:  ; |");
+    mvprintw(21, COLS-40,"| ;  |      |;  ;   |_____/ ;  |");
+    mvprintw(22, COLS-40,"|   '.'-----'      ' -_   .'   /");
+    mvprintw(23, COLS-40,"|  '.   - _  ' ;  ;  _  -    .'");
+    mvprintw(24, COLS-40," '.   -     - ;  ;   .------`");
+    mvprintw(25,COLS-40,"   `--------.      ; |");
+    mvprintw(26, COLS-40,"            |;  ,    |");
+    mvprintw(27, COLS-40,"            |;  ,    |");
+    attroff(COLOR_PAIR(3));
+}
+void print_Pablo2(){
+    // Spec : affiche la deuxieme frame de Pablo dans sa zone
+    // E,S : none , none
+
+    mvprintw(4, COLS-26,"PABLO");
+    //Big Cactus
+    attron(COLOR_PAIR(2));
+    mvprintw(6, COLS-40,"             / '-'  /");
+    mvprintw(7, COLS-40,"            ;       ;");
+    mvprintw(8, COLS-40,"         /'-|       |-' |");
+    mvprintw(9, COLS-40,"        |   |_______P   |");
+    mvprintw(10, COLS-40,"        |   '-------'   /");
+    mvprintw(11, COLS-40,"         '.___.....___.'");
+    attroff(COLOR_PAIR(2));
+    attron(COLOR_PAIR(3));
+    mvprintw(12, COLS-40,"             | ;  : ;|");
+    mvprintw(13, COLS-40,"            _|;__;__.|_");
+    attroff(COLOR_PAIR(3));
+    attron(COLOR_PAIR(1));
+    mvprintw(14, COLS-40,"           |     Y     |");
+    mvprintw(15, COLS-40,"           |___.'^'.___|");
+    attroff(COLOR_PAIR(1));
+    attron(COLOR_PAIR(3));
+    mvprintw(16, COLS-40,"             |_  ;  _|   .--.");
+    mvprintw(17, COLS-40,"    .--.     {^^^^^^^}  /;   |");
+    mvprintw(18, COLS-40,"  /    ;|    {       }  | ;   |");
+    mvprintw(19, COLS-40," | ;   |     {       }   |     |");
+    mvprintw(20, COLS-40," |;   |      ;-.__.'|     |:  ; |");
+    mvprintw(21, COLS-40,"| ;  |      |;  ;   |_____/ ;  |");
+    mvprintw(22, COLS-40,"|   '.'-----'      ' -_   .'   /");
+    mvprintw(23, COLS-40,"|  '.   - _  ' ;  ;  _  -    .'");
+    mvprintw(24, COLS-40," '.   -     - ;  ;   .------`");
+    mvprintw(25,COLS-40,"   `--------.      ; |");
+    mvprintw(26, COLS-40,"            |;  ,    |");
+    mvprintw(27, COLS-40,"            |;  ,    |");
+    attroff(COLOR_PAIR(3));
+}
+

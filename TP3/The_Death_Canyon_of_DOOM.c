@@ -30,7 +30,7 @@ int main(){
     
     int speed_modifier = adjust_difficulty(score); // l'indice de vittesse
     
-    
+    int cpt=1;
     //Initialisation
     show_perso(speed_modifier); // affiche le cycliste a sa position initiale
     init_level(); // affiche les premiers murs du canyon (ligne droite) en fonction de la taille du canyon
@@ -56,7 +56,14 @@ int main(){
         //Affichage 
         #ifdef BOSS_RUSH
         boss_screen(); //affiche la bordure separant pablo du canyon
-        print_Pablo(); //affiche Pablo
+
+        //animation de Pablo
+        if (score == 1950 ){cpt =-1;} //on l'arrete des qu'il est mort
+        if (score%10 ==0 && cpt>=0 ){cpt = 0;} //frame 1
+        if (score%20 ==0 && cpt>=0){cpt = 1;} //frame 2
+        if (cpt ==1 ){print_Pablo();}  //frame 1
+        else{print_Pablo2();} //frame 2
+
         print_pablo_health(pablo_health); //affiche la vie de Pablo
         print_pablo_dialogue(score); //affiche la phrase de dialogue de Pablo
         
