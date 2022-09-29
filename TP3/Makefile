@@ -4,10 +4,10 @@
 
 #### variables ####
 
-ifdef d
+ifdef debug
 DEBUG = -DDEBUG
 endif
-ifdef r
+ifdef rainbow
 RAINBOW = -DRAINBOW
 endif
 ifdef ap
@@ -19,11 +19,18 @@ endif
 ifdef hz
 HZ_RATE = -DHZ_RATE=$(hz)
 endif
+ifdef border
+BORDER = -DBORDER=\"$(border)\"
+endif
+ifdef skin
+SKIN = -DSKIN=\"$(skin)\"
+endif
+
 ifdef boss
 BOSS_RUSH = -DBOSS_RUSH
 endif
 
-CFLAGS = $(DEBUG) ${RAINBOW} ${AP} $(CANYON_SIZE) $(HZ_RATE) $(BOSS_RUSH)
+CFLAGS = $(DEBUG) ${RAINBOW} ${AP} $(CANYON_SIZE) $(HZ_RATE) $(BORDER) $(SKIN) $(BOSS_RUSH)
 CC = clang -g -Wall -lncurses
 
 EXECUTABLES = The_Death_Canyon_of_DOOM
