@@ -45,15 +45,16 @@ all : $(EXECUTABLES)
 %.o : %.C
 		$(CC) $(CFLAGS) -c $<
 
-The_Death_Canyon_of_DOOM.o :  The_Death_Canyon_of_DOOM.c fonctions.h ascii_art.h
+The_Death_Canyon_of_DOOM.o :  The_Death_Canyon_of_DOOM.c fonctions.h ascii_art.h boss.h
 fonctions.o : fonctions.c fonctions.h 
 ascii_art.o : ascii_art.c ascii_art.h 
+boss.o : boss.c boss.h
 ###############################################################################
 # edition de lien des modules separes 
 # pour la creation des programmes executables 
 ###############################################################################
 
-The_Death_Canyon_of_DOOM : The_Death_Canyon_of_DOOM.o fonctions.o ascii_art.o
+The_Death_Canyon_of_DOOM : The_Death_Canyon_of_DOOM.o fonctions.o ascii_art.o boss.o
 		$(CC)  $(CFLAGS) $^ -o $@ 
 
 ###############################################################################
@@ -70,5 +71,4 @@ clean :
 
 run : clean all 
 	./The_Death_Canyon_of_DOOM
-
 

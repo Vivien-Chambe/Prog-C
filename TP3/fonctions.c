@@ -3,13 +3,12 @@
 #include "fonctions.h"
 
 // variables globales
-int perso_x = 0; //pour l'initialiser au centre ensuite
-int level[255]; //tableau contenant les indices gauche du canyon 
+int perso_x = 0;//pour l'initialiser au centre ensuite
+int level[255];  //tableau contenant les indices gauche du canyon 
 int canyon_size = CANYON_SIZE; // On place CANYON_SIZE dans une variable car on va la faire décroitre
-int score = 1; // pour compter le score
 int speed_modifier = 0;  // pour la vitesse
 
-//fonctions
+
 void init_level(){
     // Spec : Renvoie la liste level avec l'initialisation en canyon ligne droite
     //E,S : none, none
@@ -29,7 +28,11 @@ int new_line(){
     else{coord_gauche = level[0]+1;} //on cree la ligne a droite
     // pour ne pas depasser de l'ecran :
     if(coord_gauche < 0){coord_gauche++;}  //si on est tout a gauche on decale a droite 
+    #ifdef BOSS_RUSH
+    else if(coord_gauche + canyon_size +1 >= COLS-50){coord_gauche--;}//si on est a la barre du boss on decale a gauche
+    #else
     else if(coord_gauche + canyon_size +1 >= COLS){coord_gauche--;} //si on est tout a droite on decale a gauche
+    #endif
     return coord_gauche;
 }
 
@@ -37,7 +40,6 @@ int new_line(){
 void update_level(){
     // Spec : effectue le defilement d'une ligne du tableau et en ajoute une nouvelle aleatoire
     // E,S : none , none
-    score++; // on augmente le score du joueur
     for(int i = LINES ; i>0;i--){
         level[i] = level[i-1]; // on descend tout les coordonnes du tableaux de une pour le defilement
     }
@@ -64,11 +66,11 @@ int check_collision(){
     // Spec : renvoie la position de l'impact si il y en a un ou 0
     // E : none
     // S : int 0 ou x =la position de l'impact
-    int relative_pos = COLS/2+perso_x; //trouve la position relative du joueur
+    int relative_pos = COLS/2+perso_x;  //trouve la position relative du joueur
     if(relative_pos == level[LINES-5] || relative_pos == (level[LINES-5]+canyon_size)){ // check si on touche un des deux murs du canyon
-        return COLS/2+perso_x; //si oui renvoie cette position
+        return COLS/2+perso_x;  //si oui renvoie cette position
     }
-    else{return 0;}//sinon renvoie 0
+    else{return 0;} //sinon renvoie 0
 }
 
 void update_perso_position(int c){
@@ -90,14 +92,11 @@ void update_perso_position(int c){
 }
 
 void show_perso(int spedd){
-    // Spec : affiche le cycliste a l'ecran / ce en couleur si rainbow active
-    // E : int spedd (la vitesse pour la couleur)
-    // S : none
     #ifdef RAINBOW
-    attron(COLOR_PAIR(spedd%7+1)); //selectionne la couleur liee a la vitesse actuelle
+    attron(COLOR_PAIR(spedd%7+1));
     #endif
     int relative_pos = COLS/2+perso_x;// Si perso_x est à 0 alors avec cette formule ça le place au centre donc peu importe la taille de la fenetre c'est au milieu.
-    mvprintw(LINES-5,relative_pos,SKIN); // affiche le cycliste a l'ecran
+    mvprintw(LINES-5,relative_pos,SKIN);
     #ifdef RAINBOW
     attroff(COLOR_PAIR(spedd%7+1));
     #endif
@@ -114,13 +113,21 @@ void autopilot(){
     else{perso_x--;}
 }
 
-void print_score(){
+int update_score(int score){
+    // Spec : augmente le score de 1
+    // E : int score 
+    // S : none
+    return score + 1;
+}
+
+void print_score(int score){
     // Spec : affiche le score a l'ecran
-    // E,S : none , none
+    // E : int score 
+    // S : none
     mvprintw(0,0,"Score  : %d",score);
 }
 
-int adjust_difficulty(){
+int adjust_difficulty(int score){
     // Spec : met a jour a la difficulte en  fonction du score (taille du canyon/vitesse du joueur)
     // E : none
     // S : int speed_modifier 
@@ -133,15 +140,16 @@ int adjust_difficulty(){
     return speed_modifier;
 }
 
-
 //fonction de debug 
-void debug(){
+void debug(int pablo_health){
     // Spec : affiche les informations de debug 
     // E,S : none , none
     mvprintw(1,0,"Canyon size : %d",canyon_size); //la taille actuelle du canyon
     mvprintw(2,0,"Spedd Modifier : %d",speed_modifier); // l'indice de speed actuel
     mvprintw(3,0,"LINES : %d COLS: %d",LINES,COLS); //le nombre de lignes et colonnes
     mvprintw(4,0,"GaucheC : %d DroiteC: %d",level[0],level[0]+canyon_size+1); // les coord de gauche et droite du canyon
+    mvprintw(5,0,"Pablo Health : %d",pablo_health); // l'indice de speed actuel
+
 
 }
 

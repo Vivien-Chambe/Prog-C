@@ -1,11 +1,12 @@
-#include <ncurses.h> //contient les fonctions basiques de jeu que l'on utilise
+#include <ncurses.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <time.h> // utile pour l'initialisation de la seed
+#include <time.h>
 
 #include "fonctions.h"
 #include "ascii_art.h"
+#include "boss.h"
 
 
 
@@ -23,12 +24,17 @@ int main(){
     
     int play = 1; // variables pour l'etat de la partie
     int c;  // variable pour recuperer les entrees utilisateurs pendant le jeu 
-    int speed_modifier = adjust_difficulty(); // l'indice de vittesse
+    int score = 1;
+    int pablo_health = 10; // definit la vie initiale de Pablo
+    int canyon_size = CANYON_SIZE;
+    
+    int speed_modifier = adjust_difficulty(score); // l'indice de vittesse
+    
+    
     //Initialisation
     show_perso(speed_modifier); // affiche le cycliste a sa position initiale
     init_level(); // affiche les premiers murs du canyon (ligne droite) en fonction de la taille du canyon
     //
-    
     //Boucle du jeu
     while (play == 1){
         c =  getch();
@@ -37,35 +43,48 @@ int main(){
         // Update le jeu (Coordonnées)
         #ifdef AUTOPILOT 
         autopilot(); //mise en route de l'autopilot qui calcule la position suivante du cycliste
-        #else    
+        #else 
         else{update_perso_position(c);} //sinon met a jour les coordonnees du cycliste en fonction des entrees du joueur
         #endif
         update_level(); //calcule et met a jour le tableau contenant le canyon
-        speed_modifier = adjust_difficulty(); //met a jour l'indice de vittesse
-        erase(); //efface la fenetre
+        #ifndef BOSS_RUSH
+        speed_modifier = adjust_difficulty(score); //met a jour l'indice de vitesse
+        #endif
+        erase();  //efface la fenetre
         //
 
         //Affichage 
-        print_score();//affiche le score actuel du joueur
+        #ifdef BOSS_RUSH
+        boss_screen(); //affiche la bordure separant pablo du canyon
+        print_Pablo(); //affiche Pablo
+        print_pablo_health(pablo_health); //affiche la vie de Pablo
+        print_pablo_dialogue(score); //affiche la phrase de dialogue de Pablo
+        
+        pablo_health = pablo_health - events(score,pablo_health,canyon_size); //on change la vie de Pablo si on est au bon score
+       
+        if(score>10300){play=0;break;} //finit le jeu apres avoir atteint un certain score
+        #endif
+        score = update_score(score); // augmente le score
+        print_score(score); //affiche le score actuel du joueur
         show_perso(speed_modifier); //affiche la nouvelle position du joueur 
         show_level(); //affiche le nouveau canyon
-
+    
         #ifdef DEBUG
-        debug(); //affiche les informations de debug
+        debug(pablo_health,events(score,pablo_health,canyon_size)); //affiche les informations de debug
         #endif
 
         //Fin de jeu
         if(check_collision()!=0){
             timeout(-1);
             play = 0;
-            mvprintw(LINES-5,check_collision(),"x"); //affiche la fin du jeu
-            mvprintw(LINES/2,COLS/2,"YOU DEAD!!!!!!"); //affiche la fin du jeu
-            refresh(); 
+            death_message(score); //affiche la fin du jeu
+            refresh(); //affiche les changements sur l'ecran
             sleep(3);
             break;
         }
+        
         //
-        refresh(); // Print changes on screen
+        refresh(); //affiche les changements sur l'ecran
         usleep(HZ_RATE*1000 - speed_modifier*3000);
         //
     }
