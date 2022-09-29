@@ -112,7 +112,7 @@ void start_screen(){
     wattroff(startScreen, COLOR_PAIR(3)); 
 
     mvwprintw(startScreen,40, 70,"Press any key to continue"); 
-    wgetch(startScreen);//attend un input de l'utilisateur pour fermer le menu
+    wgetch(startScreen);//attend un input de l'utilisateur pour fermer la fenetre
     endwin();
 
 }
