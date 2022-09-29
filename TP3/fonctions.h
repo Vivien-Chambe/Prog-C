@@ -1,3 +1,8 @@
+#ifdef BOSS_RUSH //Si on est en mod boss on désactive l'autopilot et la vitesse mise par l'utilsateur
+#undef AUTOPILOT
+#undef HERTZ_RATE
+#endif
+
 #ifndef SKIN
 #define SKIN "T"  // Perso Character
 #endif

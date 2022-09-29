@@ -19,8 +19,11 @@ endif
 ifdef hz
 HZ_RATE = -DHZ_RATE=$(hz)
 endif
+ifdef boss
+BOSS_RUSH = -DBOSS_RUSH
+endif
 
-CFLAGS = $(DEBUG) ${RAINBOW} ${AP} $(CANYON_SIZE) $(HZ_RATE)
+CFLAGS = $(DEBUG) ${RAINBOW} ${AP} $(CANYON_SIZE) $(HZ_RATE) $(BOSS_RUSH)
 CC = clang -g -Wall -lncurses
 
 EXECUTABLES = The_Death_Canyon_of_DOOM
