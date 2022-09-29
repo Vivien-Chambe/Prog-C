@@ -1,7 +1,8 @@
-#ifdef BOSS_RUSH //Si on est en mod boss on désactive l'autopilot et la vitesse mise par l'utilsateur
-#undef AUTOPILOT
-#undef HERTZ_RATE
-#undef DEBUG
+#ifdef BOSS_RUSH //Si on est en mod boss on désactive l'autopilot et les paramètres modifiés par l'utilisateur
+//#undef AUTOPILOT
+//#undef HERTZ_RATE
+//#undef CANYON_SIZE
+#undef BORDER
 #endif
 
 #ifndef SKIN
@@ -13,42 +14,36 @@
 #endif
 
 #ifndef CANYON_SIZE
-#define CANYON_SIZE 20 // Border Character
+#define CANYON_SIZE 20 // Border Size
 #endif
 
 #ifndef HZ_RATE
-#define HZ_RATE 50 // Border Character
+#define HZ_RATE 50 // Speed Rate
 #endif
 
-// Crée un couloir droit pour le début de partie
-void init_level();
 
-// Mets à jour la position du perso en fonction de l'entrée de l'utilisateur
-void update_perso_position();
+void init_level();// Crée un couloir droit pour le début de partie
 
-// Mode démo permettant un défilement continue sans erreur
-void autopilot();
+void update_perso_position();// Mets à jour la position du perso en fonction de l'entrée de l'utilisateur
 
-// Affiche la position du personnage en fonction de sa position relative
-void show_perso(int spedd);
+void autopilot();// Mode démo permettant un défilement continue sans erreur
 
-//Crée la nouvelle ligne du haut à partir de la précédente en allant a droite/a gauche ou tout droit
-int new_line();
+void show_perso(int spedd);// Affiche la position du personnage en fonction de sa position relative
 
-// Décale toutes les lignes pour créer un défilement et ajoute une nouvelle ligne grâce a new_line
-void update_level();
+int new_line();//Crée la nouvelle ligne du haut à partir de la précédente en allant a droite/a gauche ou tout droit
 
-// Print le niveau de haut en bas en parcourant le tableau level 
-void show_level();
+void update_level();// Décale toutes les lignes pour créer un défilement et ajoute une nouvelle ligne grâce a new_line
 
-// Vérifie à chaque "frame" si le joueur est en collision avec le bord gauche|droit du canyon
-int check_collision();
+void show_level();// Print le niveau de haut en bas en parcourant le tableau level 
 
-// Indique le score en temps réel au joueur
-void print_score();
+int check_collision();// Vérifie à chaque "frame" si le joueur est en collision avec le bord gauche|droit du canyon
 
-// Augmente la difficulté en réduisant la taille du canyon jusqu'à un minimum de 4, et la vitesse de défilement du canyon
-int adjust_difficulty();
+void print_score(int score);// Indique le score en temps réel au joueur
 
-// Fonction qui affiche des informations nécessaires au debug (Taille du canyon,vitesse,nombre de lignes|colonnes)
-void debug();
+int update_score(int score);// Mets à jour le score
+
+int adjust_difficulty();// Augmente la difficulté en réduisant la taille du canyon jusqu'à un minimum de 4, et la vitesse de défilement du canyon
+
+
+//fonction de Debug
+void debug();// Fonction qui affiche des informations nécessaires au debug (Taille du canyon,vitesse,nombre de lignes|colonnes)

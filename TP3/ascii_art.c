@@ -1,6 +1,9 @@
 #include <ncurses.h>
 
 void color_creation(){
+    // Spec : initialise l'utilisation de couleurs
+    // E,S : none , none
+
     start_color();
     use_default_colors();
     init_pair(1,COLOR_WHITE,-1);
@@ -14,6 +17,9 @@ void color_creation(){
 
 
 void start_screen(){
+    // Spec : initialise l'ecran de depart du jeu
+    // E,S : none , none
+
     WINDOW * startScreen = newwin(LINES, COLS, 0, 0);
     box(startScreen,0,0);
     wrefresh(startScreen);
@@ -108,3 +114,20 @@ void start_screen(){
 
 }
 
+void death_message(int score){
+    // Spec : initialise l'ecran de mort / fin du jeu
+    // E,S : none , none
+
+
+    mvprintw(LINES-5,check_collision(),"x");
+
+    
+    mvprintw((LINES/2),(COLS/2)-10,  "         ## #           ");
+    mvprintw((LINES/2)+1,(COLS/2)-10,"         ####         ");
+    mvprintw((LINES/2)+2,(COLS/2)-10,"_________##_________ ");
+    mvprintw((LINES/2)+3,(COLS/2)-10,"|                    |");
+    mvprintw((LINES/2)+4,(COLS/2)-10,"|    YOU DIE !!!!!!  |");
+    mvprintw((LINES/2)+5,(COLS/2)-10,"|                    |");
+    mvprintw((LINES/2)+6,(COLS/2)-10,"|      Score:%d   |",score);
+    mvprintw((LINES/2)+7,(COLS/2)-10,"|____________________|");
+}
