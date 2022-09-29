@@ -3,6 +3,24 @@
 ###############################################################################
 
 #### variables ####
+
+ifdef d
+DEBUG = -DDEBUG
+endif
+ifdef r
+RAINBOW = -DRAINBOW
+endif
+ifdef ap
+AP = -DAUTOPILOT
+endif
+ifdef cn
+CANYON_SIZE = -DCANYON_SIZE=$(cn)
+endif
+ifdef hz
+HZ_RATE = -DHZ_RATE=$(hz)
+endif
+
+CFLAGS = $(DEBUG) ${RAINBOW} ${AP} $(CANYON_SIZE) $(HZ_RATE)
 CC = clang -g -Wall -lncurses
 
 EXECUTABLES = The_Death_Canyon_of_DOOM
@@ -28,9 +46,6 @@ ascii_art.o : ascii_art.c ascii_art.h
 The_Death_Canyon_of_DOOM : The_Death_Canyon_of_DOOM.o fonctions.o ascii_art.o
 		$(CC)  $(CFLAGS) $^ -o $@ 
 
-The_Death_Canyon_of_DOOM_Auto : The_Death_Canyon_of_DOOM.o fonctions.o ascii_art.o
-		$(CC)  --__AUTOPILOT $^ -o $@
-
 ###############################################################################
 # nettoyage : suppression des fichiers .o et des executables
 ###############################################################################
@@ -43,9 +58,7 @@ clean :
 ###############################################################################
 
 
-run : all
+run : clean all 
 	./The_Death_Canyon_of_DOOM
 
-auto: The_Death_Canyon_of_DOOM_Auto
-	./The_Death_Canyon_of_DOOM_Auto
 

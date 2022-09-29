@@ -10,7 +10,6 @@ int score = 1;
 int speed_modifier = 0; 
 
 
-// Cette fonction assure un couloir droit pour débuter la partie
 void init_level(){
     for(int i = 0; i<LINES;i++){
         level[i] = (COLS/2)-(canyon_size/2);
@@ -39,13 +38,13 @@ void update_level(){
 
 void show_level(){
     for(int i = 0;i < LINES; i++){
-            #ifdef __RAINBOW
+            #ifdef RAINBOW
             int random = rand()%7+1;
             attron(COLOR_PAIR(random));
             #endif
             mvprintw(i,level[i],BORDER);
             mvprintw(i,level[i] + canyon_size +1,BORDER); // Le +1 sert à ne pas compter la derniere case du canyon comme un mur mais avoir réellement canyon_size espaces.
-            #ifdef __RAINBOW
+            #ifdef RAINBOW
             attroff(COLOR_PAIR(random));
             #endif
     }
@@ -75,6 +74,17 @@ void update_perso_position(int c){
     }
 }
 
+void show_perso(int spedd){
+    #ifdef RAINBOW
+    attron(COLOR_PAIR(spedd%7+1));
+    #endif
+    int relative_pos = COLS/2+perso_x;// Si perso_x est à 0 alors avec cette formule ça le place au centre donc peu importe la taille de la fenetre c'est au milieu.
+    mvprintw(LINES-5,relative_pos,SKIN);
+    #ifdef RAINBOW
+    attroff(COLOR_PAIR(spedd%7+1));
+    #endif
+}
+
 // Jusqu'à canyon_size = 3 l'autopilot fonctionne
 void autopilot(){
     int relative_pos = COLS/2+perso_x;
@@ -82,14 +92,6 @@ void autopilot(){
         perso_x++;
     }
     else{perso_x--;}
-}
-
-
-void show_perso(int spedd){
-    attron(COLOR_PAIR(spedd%7+1));
-    int relative_pos = COLS/2+perso_x;// Si perso_x est à 0 alors avec cette formule ça le place au centre donc peu importe la taille de la fenetre c'est au milieu.
-    mvprintw(LINES-5,relative_pos,SKIN);
-    attroff(COLOR_PAIR(spedd%7+1));
 }
 
 void print_score(){
@@ -100,7 +102,7 @@ int adjust_difficulty(){
     if(score%500 == 0 && canyon_size>4){
         canyon_size--;
     }
-    if(score%200 == 0 && speed_modifier < 10){
+    if(score%200 == 0 && speed_modifier < 10 && HZ_RATE*1000-speed_modifier*3000>3000){
         speed_modifier++;
     }
     return speed_modifier;

@@ -11,14 +11,15 @@
 
 int main(){
     srand(time(NULL));
-    initscr();
+    initscr(); //Initialise la fenetre de "travail"
     keypad(stdscr, true); //Autorise les entrées utilisateurs
-    noecho();
-    cbreak();
-    color_creation();
+    noecho(); //Désactive l'affichage des entrées utilisateur
+    cbreak(); //
+    color_creation(); //
     start_screen();
-    curs_set(0);
-    timeout(0);
+    curs_set(0); //Désactive l'affichage du curseur
+    timeout(0);  // N'attends pas un getch() pour avancer
+    
     int play = 1;
     int c;
     int speed_modifier = adjust_difficulty();
@@ -29,8 +30,8 @@ int main(){
         c =  getch();
         if(c == 'q'){play = 0;break;}
 
-        //Update le jeu (Coordonnées)
-        #ifdef __AUTOPILOT
+        // Update le jeu (Coordonnées)
+        #ifdef AUTOPILOT
         autopilot();
         #else    
         else{update_perso_position(c);}
@@ -38,6 +39,7 @@ int main(){
         update_level();
         speed_modifier = adjust_difficulty();
         erase();
+        //
 
         //Affichage 
         print_score();
@@ -58,9 +60,7 @@ int main(){
             break;
         }
         refresh(); // Print changes on screen
-        usleep(50000 - speed_modifier*3000);
-
-        
+        usleep(HZ_RATE*1000 - speed_modifier*3000);
     }
     getch();
     endwin();
