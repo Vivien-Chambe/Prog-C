@@ -54,6 +54,13 @@ int main(){
         //
 
         //Affichage 
+        
+        
+        score = update_score(score); // augmente le score
+        print_score(score); //affiche le score actuel du joueur
+        show_perso(speed_modifier); //affiche la nouvelle position du joueur 
+        show_level(); //affiche le nouveau canyon
+        
         #ifdef BOSS_RUSH
         boss_screen(); //affiche la bordure separant pablo du canyon
 
@@ -71,10 +78,7 @@ int main(){
        
         if(score>10300){play=0;break;} //finit le jeu apres avoir atteint un certain score
         #endif
-        score = update_score(score); // augmente le score
-        print_score(score); //affiche le score actuel du joueur
-        show_perso(speed_modifier); //affiche la nouvelle position du joueur 
-        show_level(); //affiche le nouveau canyon
+        
     
         #ifdef DEBUG
         debug(pablo_health,events(score,pablo_health,canyon_size)); //affiche les informations de debug

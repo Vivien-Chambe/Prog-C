@@ -1,7 +1,9 @@
+
+
 #ifdef BOSS_RUSH //Si on est en mod boss on désactive l'autopilot et les paramètres modifiés par l'utilisateur
-//#undef AUTOPILOT
-//#undef HERTZ_RATE
-//#undef CANYON_SIZE
+#undef AUTOPILOT
+#undef HERTZ_RATE
+#undef CANYON_SIZE
 #undef BORDER
 #endif
 
