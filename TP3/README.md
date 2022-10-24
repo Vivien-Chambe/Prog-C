@@ -1,6 +1,6 @@
 ## DESCRIPTION:
 
-Vous êtes un cycliste qui s'est perdu dans un canyon et vous devez vousen échapper sans tomber de votre
+Vous êtes un cycliste qui s'est perdu dans un canyon et vous devez vous en échapper sans tomber de votre
 fidèle destrier.
 
 Le mode boss est réglé de manière à être suffisament simple pour suivre l'histoire en même temps.
