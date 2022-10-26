@@ -91,6 +91,7 @@ void update_perso_position(int c){
     }
 }
 
+
 void show_perso(int spedd){
     #ifdef RAINBOW
     attron(COLOR_PAIR(spedd%7+1));

@@ -42,7 +42,7 @@ all : $(EXECUTABLES)
 # 			Regles de compilation
 ###############################################################################
 
-%.o : %.C
+%.o : %.c
 		$(CC) $(CFLAGS) -c $<
 
 The_Death_Canyon_of_DOOM.o :  The_Death_Canyon_of_DOOM.c fonctions.h ascii_art.h boss.h
