@@ -1,27 +1,37 @@
-ifdef tests
-TESTS = -DTESTS=$(tests)
+ifdef test_qsortu
+QSORTU = -DQSORTU
 endif
 
-CFLAGS = $(TESTS)
-CC = clang -g -Wall
-EXECUTABLES = sortings
+ifdef test_decroissant
+DECROISSANT = -DDECROISSANT
+endif
+
+
+
+CFLAGS = $(QSORTU) $(DECROISSANT)
+CC = clang -g -lm  -Wall
+EXECUTABLES = main
 
 all : $(EXECUTABLES)
+
 
 ###############################################################################
 # 			Regles de compilation
 ###############################################################################
 
-fonctions.o: fonctions.c fonctions.h
-	$(CC) -c $<
+%.o : %.c
+		$(CC) $(CFLAGS) -c $<
 
+main.o :  main.c qsort.h 
+qsort.o : qsort.c qsort.h help.h
+help.o : help.c help.h
 ###############################################################################
 # edition de lien des modules separes 
 # pour la creation des programmes executables 
 ###############################################################################
 
-sortings : fonctions.o
-		$(CC) $(CFLAGS) -o $@  $^ 
+main : main.o qsort.o help.o
+		$(CC)  $(CFLAGS) $^ -o $@ 
 
 ###############################################################################
 # nettoyage : suppression des fichiers .o et des executables
@@ -34,6 +44,11 @@ clean :
 # Lancement : Lancement de l'executable
 ###############################################################################
 
+run :clean all
+	./main
 
-run : clean all 
-	./sortings
+###############################################################################
+test_qsortu:
+	test_qsortu=1 run
+test_decroissant:
+	test_decroissant=1 run
