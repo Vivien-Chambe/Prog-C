@@ -8,12 +8,12 @@
 int main(){
     srand(time(NULL));
     
-    #ifdef QSORTU
-    test_qsortu();
-    #endif
-    #ifdef DECROISSANT
-    test_qsortu_decroissant();
-    #endif
+    //test_qsortu();
+    //test_qsortu_uniforme();
+    //test_qsortu_decroissant();
+    test_qsortu_uniforme_decroissant();
+    
+
 
     return 1;
 }

@@ -6,9 +6,13 @@ ifdef test_decroissant
 DECROISSANT = -DDECROISSANT
 endif
 
+ifdef test_qsort_uniforme
+QSORT_UNIFORME = -DQSORT_UNIFORME
+endif
 
 
-CFLAGS = $(QSORTU) $(DECROISSANT)
+
+CFLAGS = $(QSORTU) $(DECROISSANT) $(QSORT_UNIFORME)
 CC = clang -g -lm  -Wall
 EXECUTABLES = main
 
@@ -20,7 +24,7 @@ all : $(EXECUTABLES)
 ###############################################################################
 
 %.o : %.c
-		$(CC) $(CFLAGS) -c $<
+		$(CC) -c $<
 
 main.o :  main.c qsort.h 
 qsort.o : qsort.c qsort.h help.h
@@ -48,7 +52,6 @@ run :clean all
 	./main
 
 ###############################################################################
-test_qsortu:
-	test_qsortu=1 run
-test_decroissant:
-	test_decroissant=1 run
+
+test_qsort_uniforme :
+	make run test_qsort_uniforme=1

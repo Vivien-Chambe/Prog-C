@@ -1,6 +1,33 @@
 {
     "files.associations": {
         "fonctions.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "random": "cpp",
+        "stdint.h": "c",
+        "cstddef": "c",
+        "cstdio": "c",
+        "cwchar": "c",
+        "array": "c",
+        "atomic": "c",
+        "hash_map": "c",
+        "hash_set": "c",
+        "*.tcc": "c",
+        "concepts": "c",
+        "vector": "c",
+        "functional": "c",
+        "memory": "c",
+        "memory_resource": "c",
+        "optional": "c",
+        "string_view": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "initializer_list": "c",
+        "new": "c",
+        "ranges": "c",
+        "stdexcept": "c",
+        "string": "c",
+        "system_error": "c",
+        "typeinfo": "c",
+        "utility": "c"
     }
 }

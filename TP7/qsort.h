@@ -7,4 +7,5 @@
 
 void test_qsortu();
 void test_qsortu_decroissant();
+void test_qsortu_uniforme_decroissant();
 

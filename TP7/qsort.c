@@ -82,8 +82,10 @@ void test_qsortu(){ //Test sur des tableaux de taille de 1 000 000 à 100 000 00
 
 //Q3) On peut prévoir que si le tableau est trié dans l'ordre décroissant on sera en pire cas et donc les temps seront grandement augmentés
 
+//1)
 //Permets de voir que plus la taille du tableau est grande plus l'ecart entre le 
 //temps de tri pour un tab random et un tab trie décroissant est grand
+// On teste sur des tableaux de taille 2000 à 10 000 car en dessous il est plus compliqué de voir de réelles différences
 void test_qsortu_decroissant(){
     size_t Tlen;
     uint32_t *T;
@@ -123,3 +125,100 @@ void test_qsortu_decroissant(){
     
     }
 }
+
+//2)
+
+int partitionqsort_uniforme(size_t Tlen , uint32_t T[Tlen], int d, int f){
+    uint32_t x = rand()%(f-d+1)+d;
+    int n = f;
+    for (int i = f-1 ; i>=d ; i--){
+        if (T[i]>x){
+            T[n] = T[i];
+            T[i] = T[n-1];
+            n = n-1 ;
+        }
+    }
+    T[n] = x;
+    return n;
+}
+
+void quicksortox_uniforme(size_t Tlen,uint32_t T[Tlen],int d,int f){
+    if (d<f){
+        int x = partitionqsort_uniforme(Tlen,T,d,f);
+        quicksortox_uniforme(Tlen,T,d,x-1);
+        quicksortox_uniforme(Tlen,T,x+1,f);
+    }
+
+}
+
+void qsortu_uniforme(size_t Tlen, uint32_t T[Tlen]){
+    int d,f;
+    d = 0;
+    f = Tlen-1;
+    if (d<f){
+        quicksortox_uniforme(Tlen,T,d,f);
+    }
+}
+
+
+//3)
+
+// Compare le temps de tri d'un tableau random,
+// d'un tableau decroissant avec pivot à la fin
+// et d'un tableau décroissant avec pivot aléatoire
+void test_qsortu_uniforme_decroissant(){
+    size_t Tlen;
+    uint32_t *T;
+    struct timeval start;
+    struct timeval end;
+    for(int i = 2; i <= 10; i++){
+
+        Tlen = i*1000;
+        T = malloc(sizeof(*T) * Tlen);
+
+        color_vert(1);
+        printf("\n\nTri d'un tableau de taille %zu",Tlen);
+        color_reset();
+        printf("\nTableau aléatoire:");
+        //Tableau random
+        for (int i=0 ; i<(int)Tlen ; i++ ){
+            T[i]= rand()%Tlen +1;
+        }
+        gettimeofday(&start,NULL);
+        qsortu_uniforme(Tlen,T);
+        gettimeofday(&end,NULL);
+        printf("\n  Temps écoulé: %f s",time_diff(&start,&end));
+        
+        printf("\nTableau décroissant avec pivot à la fin:");
+        //Tableau décroissant
+        for (int i=0 ; i<(int)Tlen ; i++ ){
+            T[Tlen - i - 1]= i;
+        }
+
+        gettimeofday(&start,NULL);
+        qsortu(Tlen,T);
+        gettimeofday(&end,NULL);
+        printf("\n  Temps écoulé: %f s",time_diff(&start,&end));
+
+        printf("\nTableau décroissant avec pivot aléatoire:");
+        //Tableau décroissant
+        for (int i=0 ; i<(int)Tlen ; i++ ){
+            T[Tlen - i - 1]= i;
+        }
+
+        gettimeofday(&start,NULL);
+        qsortu_uniforme(Tlen,T);
+        gettimeofday(&end,NULL);
+        printf("\n  Temps écoulé: %f s",time_diff(&start,&end));
+
+        free(T);
+    printf("\n");
+    
+    }
+}
+
+
+//Q4)
+
+//1)
+
