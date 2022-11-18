@@ -1,19 +1,9 @@
-ifdef test_qsortu
-QSORTU = -DQSORTU
+ifdef test
+    TEST = -DTEST=$(test)
 endif
 
-ifdef test_decroissant
-DECROISSANT = -DDECROISSANT
-endif
-
-ifdef test_qsort_uniforme
-QSORT_UNIFORME = -DQSORT_UNIFORME
-endif
-
-
-
-CFLAGS = $(QSORTU) $(DECROISSANT) $(QSORT_UNIFORME)
-CC = clang -g -lm  -Wall
+CFLAGS = $(TEST)
+CC = clang -g  -lm  -Wall 
 EXECUTABLES = main
 
 all : $(EXECUTABLES)
@@ -24,17 +14,18 @@ all : $(EXECUTABLES)
 ###############################################################################
 
 %.o : %.c
-		$(CC) -c $<
+		$(CC) $(CFLAGS) -c $<
 
 main.o :  main.c qsort.h 
 qsort.o : qsort.c qsort.h help.h
+radix.o : radixsort.c radixsort.h help.h
 help.o : help.c help.h
 ###############################################################################
 # edition de lien des modules separes 
 # pour la creation des programmes executables 
 ###############################################################################
 
-main : main.o qsort.o help.o
+main : main.o qsort.o radixsort.o help.o
 		$(CC)  $(CFLAGS) $^ -o $@ 
 
 ###############################################################################
@@ -53,5 +44,3 @@ run :clean all
 
 ###############################################################################
 
-test_qsort_uniforme :
-	make run test_qsort_uniforme=1

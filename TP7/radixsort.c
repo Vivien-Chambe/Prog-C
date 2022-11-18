@@ -5,6 +5,7 @@
 #include <math.h> // pour les tests
 #include <sys/time.h>
 
+#include "qsort.h"
 
 // Radix sort
 
@@ -17,26 +18,44 @@
 //denomsort : tri par dénombrement d'un tableau d'entiers de 32 bits
 
 void denomsort(size_t Tlen, uint32_t T[Tlen], int k){
-    int i,j;
-    int *C;
-    C = malloc(sizeof(*C) * (k+1));
-    for (i = 0; i<=k; i++){
-        C[i] = 0;
+    // cherche le plus grand élément de T
+    uint32_t max = 0;
+    for (int i = 0; i<Tlen; i++){
+        if (T[i]>max){max = T[i];}
     }
-    for (j = 0; j<Tlen; j++){
-        C[T[j]] = C[T[j]] + 1;
+    // on crée un tableau de taille max+1
+    uint32_t *T2;
+    T2 = malloc(sizeof(*T2) * (max+1));
+    // on initialise le tableau à 0
+    for (int i = 0; i<(max+1); i++){
+        T2[i] = 0;
     }
-    for (i = 1; i<=k; i++){
-        C[i] = C[i] + C[i-1];
+    // on compte le nombre d'occurences de chaque élément de T
+    for (int i = 0; i<Tlen; i++){
+        T2[T[i]] = T2[T[i]] + 1;
     }
-    for (j = Tlen-1; j>=0; j--){
-        T[C[T[j]]-1] = T[j];
-        C[T[j]] = C[T[j]] - 1;
+    // on remplit T avec les éléments de T2
+    int j = 0;
+    for (int i = 0; i<(max+1); i++){
+        while (T2[i]>0){
+            T[j] = i;
+            j = j + 1;
+            T2[i] = T2[i] - 1;
+        }
     }
-    free(C);
+    free(T2);
+
 }
 
-uint32_t radix_sortu(uint32_t *T, uint32_t n) {
+// radixsort : tri par base d'un tableau d'entiers de 32 bits
 
+void radixsort(size_t Tlen, uint32_t T[Tlen]){
+    // on trie par dénombrement les éléments de T en fonction de leur poids faible
+    denomsort(Tlen,T,0);
+    // on trie par dénombrement les éléments de T en fonction de leur poids fort
+    denomsort(Tlen,T,16);
 }
+
+// Test
+
 
