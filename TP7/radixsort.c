@@ -17,45 +17,57 @@
 
 //denomsort : tri par dénombrement d'un tableau d'entiers de 32 bits
 
-void denomsort(size_t Tlen, uint32_t T[Tlen], int k){
-    // cherche le plus grand élément de T
-    uint32_t max = 0;
-    for (int i = 0; i<Tlen; i++){
-        if (T[i]>max){max = T[i];}
+uint32_t denomsort(uint32_t *T,uint32_t *TS, size_t b,size_t Tlen){
+    uint32_t *T2 = calloc(Tlen, sizeof(uint32_t));
+
+    for(size_t i = 0; i < Tlen; i++){
+        T2[T[i]] += 1;
     }
-    // on crée un tableau de taille max+1
-    uint32_t *T2;
-    T2 = malloc(sizeof(*T2) * (max+1));
-    // on initialise le tableau à 0
-    for (int i = 0; i<(max+1); i++){
-        T2[i] = 0;
+    for(size_t i = 1; i < b; i++){
+        T2[i] += T2[i-1];
     }
-    // on compte le nombre d'occurences de chaque élément de T
-    for (int i = 0; i<Tlen; i++){
-        T2[T[i]] = T2[T[i]] + 1;
-    }
-    // on remplit T avec les éléments de T2
-    int j = 0;
-    for (int i = 0; i<(max+1); i++){
-        while (T2[i]>0){
-            T[j] = i;
-            j = j + 1;
-            T2[i] = T2[i] - 1;
-        }
+    for(size_t i = Tlen; i > 0; i--){
+        T2[T[i]] = T2[T[i]] -1 ;
+        TS[T2[T[i]]] = T[i];
     }
     free(T2);
+    return TS;
 
 }
 
 // radixsort : tri par base d'un tableau d'entiers de 32 bits
 
-void radixsort(size_t Tlen, uint32_t T[Tlen]){
-    // on trie par dénombrement les éléments de T en fonction de leur poids faible
-    denomsort(Tlen,T,0);
-    // on trie par dénombrement les éléments de T en fonction de leur poids fort
-    denomsort(Tlen,T,16);
+uint32_t radixsortu(size_t nlen, uint32_t *T, size_t b){
+    uint32_t *T1 = malloc(nlen * sizeof(uint32_t));
+    uint32_t *T2 = malloc(nlen * sizeof(uint32_t));
+    for(int i = 0; i < nlen; i++){
+        denomsort(T1,T2,b,i);
+        memcpy(T1,T2,nlen * sizeof(uint32_t));
+    }
+    
+    free(T2);
+    return T1;
 }
 
 // Test
 
+void test_radixsort(){
+    
+    size_t Tlen; // taille du tableau
+    uint32_t *T; // tableau
+    
+    Tlen = 100; 
+    T = malloc(sizeof(*T) * Tlen); 
+    color_vert(1);
+    printf("\nTest pour Tlen = %zu :",Tlen);    
+    color_reset(); 
+        
+    for (int i=0 ; i<(int)Tlen ; i++ ){ // remplissage du tableau
+        T[i]= rand()%Tlen +1;
+    }
+    int nlen = 32 * Tlen;
+    uint32_t* T_trie = radixsortu(nlen,T,32);
+
+    free (T); // libération de la mémoire
+}
 

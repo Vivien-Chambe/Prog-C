@@ -3,7 +3,7 @@ ifdef test
 endif
 
 CFLAGS = $(TEST)
-CC = clang -g  -lm  -Wall 
+CC = clang -g  -lm -Wall
 EXECUTABLES = main
 
 all : $(EXECUTABLES)
