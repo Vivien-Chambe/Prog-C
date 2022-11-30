@@ -17,9 +17,6 @@ acc *= (k | 1);
 return acc;
 }
 
-
-
-
 struct bf
 {
 uint32_t key; // main hf key
@@ -35,8 +32,6 @@ size_t sz;
 void *dat;
 };
 
-
-
 struct bf *create_bf(uint32_t key, size_t m, uint64_t n){
     uint64_t nb_elem_bits = ((m/64)+1);
     struct bf *bloom = malloc(sizeof(struct bf)+ sizeof(uint64_t)*nb_elem_bits);
@@ -46,8 +41,6 @@ struct bf *create_bf(uint32_t key, size_t m, uint64_t n){
     bloom->k = k;
     bloom->key = key;
     bloom->m = m;
-
-    printf("k = %u, key = %u, m = %zu",k,key,m);
 
     for(int i = 0; i<nb_elem_bits;i++){
         bloom->bits[i] = 0;
@@ -64,23 +57,21 @@ void insert(struct bf *s, struct bd elem){
     //on hash k fois elem dans h
     uint8_t *h = elem.dat;
     int index;
-    
-    for(int i = 0; i < s->&k ;i++){
-        //printf(" %u ",s->k);
+    uint32_t k = s->k;
+    for(int i = 0; i < k ;i++){
         uint32_t key = ((s->key) + i)% (uint32_t)(pow(2,32)-1);
         uint32_t emp = hash_tp8l3mi(key,elem.sz,h);
         emp = emp%64;
-        //printf("emp : %u \n",emp);
         //on veut mettre le h-ieme bit à 1
         // On calcule ou mettre le h-ieme bit
-        index = (((emp/64)-1)<=0) ? (emp/64): (emp/64)-1  ; // pour savoir dans quel element de bit on doit chercher
-        s->bits[index] |= (uint64_t)(pow(2,emp%64)-1);
+        index = (((emp/64))<=0) ? (emp/64): (emp/64)-1  ; // pour savoir dans quel element de bit on doit chercher
+        printf("index = %d \n",index);
+        uint64_t mask = 1;
+        mask = mask << (emp%64); // on veut mettre le emp-ieme bit à 1 donc on décale de emp%64
+        
+        s->bits[index] = s->bits[index] | mask; // on met le emp-ieme bit à 1
+
     }
-
-    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHH");
-    
-
-
 }
 
 bool prbly_in_set(struct bf *s, struct bd elem){
@@ -102,12 +93,11 @@ bool prbly_in_set(struct bf *s, struct bd elem){
 bool test_insert(size_t m, uint64_t n){
     uint32_t key = rand()%(uint32_t)(pow(2,32)-1);
     struct bf *bloom = create_bf(key,m,n);
-    printf("\nJE VEUX K : %u \n",bloom->k);
     struct bd elem;
     elem.sz = 64;
     for(int i = 0; i<n;i++){
         elem.dat = &i;
-        //insert(bloom,elem);
+        insert(bloom,elem);
         printf("bits ");
         for(int j=0;j<((m/64)+1);j++){printf(" %lu",bloom->bits[j]);}
         printf("\n");
