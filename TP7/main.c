@@ -34,6 +34,8 @@ int main(){
     #elif TEST == 6
     color_bleu(1); printf("Comparatif de qsortu, qsortg, et qsort standard\n");
     test_compare_qsorts(); // Compare le temps de tri de qsortu, qsortg et qsort de la librairei standard
+    #elif TEST == 7
+    test_radixsort(); // Teste radixsort
     #endif
 
     return 0;

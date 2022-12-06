@@ -1,9 +1,4 @@
-ifdef test
-    TEST = -DTEST=$(test)
-endif
-
-CFLAGS = $(TEST)
-CC = clang -g  -lm -Wall
+CC = clang -g -O2 -lm -Wall -fsanitize=undefined
 EXECUTABLES = main
 
 all : $(EXECUTABLES)
@@ -16,16 +11,13 @@ all : $(EXECUTABLES)
 %.o : %.c
 		$(CC) $(CFLAGS) -c $<
 
-main.o :  main.c qsort.h 
-qsort.o : qsort.c qsort.h help.h
-radix.o : radixsort.c radixsort.h help.h
-help.o : help.c help.h
+main.o :  main.c
 ###############################################################################
 # edition de lien des modules separes 
 # pour la creation des programmes executables 
 ###############################################################################
 
-main : main.o qsort.o radixsort.o help.o
+main : main.o 
 		$(CC)  $(CFLAGS) $^ -o $@ 
 
 ###############################################################################
@@ -43,4 +35,3 @@ run :clean all
 	./main
 
 ###############################################################################
-
