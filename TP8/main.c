@@ -68,7 +68,6 @@ void insert(struct bf *s, struct bd elem){
         //on veut mettre le h-ieme bit à 1
         // On calcule ou mettre le h-ieme bit
         index = (((emp/64))<=0) ? (emp/64): (emp/64)-1  ; // pour savoir dans quel element de bit on doit chercher
-        //printf("index = %d \n",index);
         uint64_t mask = 1;
         mask = mask << (emp%64); // on veut mettre le emp-ieme bit à 1 donc on décale de emp%64
         
@@ -89,35 +88,71 @@ bool prbly_in_set(struct bf *s, struct bd elem){
         uint64_t emp = hash_tp8l3mi(key,elem.sz,h);
         emp = emp%64;
         //on verifie le hieme bit
-        index = ((emp/64-1)<=0)? (emp/64)-1 :(emp/64); 
-        if(s->bits[index] & (uint64_t)(pow(2,emp%64)-1)){return false;} 
+        index = ((emp/64)<=0)? (emp/64)-1 :(emp/64); 
+        if(!(s->bits[index] & (uint64_t)(pow(2,emp%64)))){return false;} 
     }
     return true;
     
 }
 
+
+
 bool test_insert(size_t m, uint64_t n){
     uint32_t key = rand()%(uint32_t)(pow(2,32)-1);
     struct bf *bloom = create_bf(key,m,n);
+    uint64_t *elements = malloc(sizeof(uint64_t)*n);
+    for(int i = 0; i<n;i++){
+        uint64_t r = rand() + 1;
+        elements[i] = r;
+    }
     struct bd elem;
     elem.sz = 64;
     int cpt = 0;
     for(int i = 0; i<n;i++){
-        elem.dat = &i;
-        insert(bloom,elem);
-        printf("bits ");
-        for(int j=0;j<((m/64)+1);j++){printf(" %lu",bloom->bits[j]);}
-        printf("\n");
+        elem.dat = &elements[i];
+        insert(bloom,elem);    
+    }
+    for(int i = 0; i<n;i++){
+        elem.dat = &elements[i];
         if(!prbly_in_set(bloom,elem)){
-            cpt ++;
-           
+            return false;
         }
-        
     }
     delete_bf(bloom);
     if (cpt > 0){printf("Element non trouvé\n");return false;}
     return true;
     
+    }   
+
+uint64_t test_fp(size_t m, uint64_t n, uint64_t nfpt){
+    uint32_t key = rand()%(uint32_t)(pow(2,32)-1);
+    struct bf *bloom = create_bf(key,m,n);
+    uint64_t *elements = malloc(sizeof(uint64_t)*n);
+    for(int i = 0; i<n;i++){
+        uint64_t r = rand() + 1;
+        elements[i] = r;
+    }
+    struct bd elem;
+    elem.sz = 64;
+    for(int i = 0; i<n;i++){
+        elem.dat = &elements[i];
+        insert(bloom,elem);    
+    }
+    uint64_t *fpt = malloc(sizeof(uint64_t)*nfpt);
+    for(int i = 0; i<nfpt;i++){
+        uint64_t r = rand() + 1;
+        fpt[i] = r;
+    }
+    uint64_t nb_fp = 0;
+    for(int i = 0; i<nfpt;i++){
+        elem.dat = &fpt[i];
+        if(prbly_in_set(bloom,elem)){
+            nb_fp++;
+        }
+    }
+    delete_bf(bloom);
+    return nb_fp;
+
 }
 
 uint64_t test_fp(size_t m, uint64_t n, uint64_t nfpt){
@@ -169,7 +204,7 @@ int main(){
     printf("\033[0;32m");
     for (int i = 1; i<=40;i++){
         nb_fp = test_fp(100*i,100,100000);
-        printf("Pour m=100*%d n=100 et nfpt = 100000 : %lu \n",i,nb_fp);
+        printf("Pour m=100*%d n=100 et nfpt = 64000 : %lu \n",i,nb_fp);
     }
     printf("\033[0m");
     printf("\n");
